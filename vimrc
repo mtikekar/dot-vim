@@ -8,6 +8,7 @@ Plug 'ervandew/snipmate.vim'
 Plug 'mtikekar/vim-bsv'
 Plug 'dag/vim-fish'
 Plug 'tpope/vim-fugitive'
+Plug 'ivanov/vim-ipython'
 call plug#end()
 
 let mapleader = "-"
