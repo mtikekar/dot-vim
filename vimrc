@@ -11,6 +11,10 @@ Plug 'tpope/vim-fugitive'
 Plug 'ivanov/vim-ipython'
 call plug#end()
 
+if !exists('g:loaded_matchit')
+    runtime! macros/matchit.vim
+endif
+
 let mapleader = "-"
 
 " tab options
@@ -30,6 +34,8 @@ nnoremap <space> za
 set linebreak
 " always show status line
 set laststatus=2
+" leave 1 line above/below when scrolling
+set scrolloff=1
 
 " search options
 set incsearch
@@ -44,8 +50,8 @@ inoremap <up> <C-o>gk
 inoremap <down> <C-o>gj
 
 " file type detection and indenting
-filetype plugin on
-filetype indent on
+filetype plugin indent on
+syntax enable
 
 " solarized options
 let g:solarized_termtrans=1
@@ -59,7 +65,7 @@ highlight! link DiffText MatchParen
 " color the 81st column of wide lines
 highlight ColorColumn ctermbg=black guibg=#073642
 call matchadd('ColorColumn', '\%81v', 100)
-" highlight trailing whitespace
+" trailing whitespace setting (vim-better-whitespace)
 au VimEnter * CurrentLineWhitespaceOff soft
 highlight ExtraWhitespace ctermbg=black guibg=#073642
 
@@ -107,3 +113,6 @@ if has('gui_running')
 
     set ballooneval
 endif
+
+" supertab setting
+let g:SuperTabDefaultCompletionType = "context"
