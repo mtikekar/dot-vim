@@ -125,3 +125,17 @@ augroup templates
   " parse special text in the templates after the read
   autocmd BufNewFile * %s/\v:VIM_EVAL:(.{-}):END_EVAL:/\=eval(submatch(1))/ge
 augroup END
+
+" New BSV files use tabs, in existing files check for tabs
+function TabOrSpace()
+    if search("^\t", "nw") == 0
+        setlocal expandtab
+        setlocal shiftwidth=4 tabstop=4 softtabstop=4
+    else
+        setlocal noexpandtab
+        setlocal shiftwidth=2 tabstop=2 softtabstop=2
+    endif
+endfunction
+
+autocmd BufReadPost *.bsv call TabOrSpace()
+autocmd BufNewFile *.bsv setlocal noexpandtab shiftwidth=2 tabstop=2 softtabstop=2
