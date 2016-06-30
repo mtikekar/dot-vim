@@ -116,3 +116,12 @@ endif
 
 " supertab setting
 let g:SuperTabDefaultCompletionType = "context"
+
+augroup templates
+  au!
+  " read in template files
+  autocmd BufNewFile *.* silent! execute '0r $HOME/.vim/templates/template.'.expand("<afile>:e")
+
+  " parse special text in the templates after the read
+  autocmd BufNewFile * %s/\v:VIM_EVAL:(.{-}):END_EVAL:/\=eval(submatch(1))/ge
+augroup END
