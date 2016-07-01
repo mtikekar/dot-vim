@@ -2,8 +2,6 @@ syntax keyword bsvFunction t2 t3
 syntax keyword bsvDatatype T2 T3 V V2 V3
 
 highlight link bsvFunction Keyword
-highlight! link Number Normal
-highlight! link Boolean Normal
 highlight link bsvSystemTask Normal
 highlight link bsvInterface Normal
 highlight link bsvKeyword Ignore
