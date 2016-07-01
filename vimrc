@@ -5,7 +5,7 @@ Plug 'ntpeters/vim-better-whitespace'
 Plug 'mbbill/undotree', {'on': 'UndotreeShow'}
 Plug 'ervandew/supertab'
 Plug 'MarcWeber/vim-addon-mw-utils' | Plug 'tomtom/tlib_vim' | Plug 'garbas/vim-snipmate'
-Plug 'mtikekar/vim-bsv'
+Plug 'git@github.com:mtikekar/vim-bsv.git'
 Plug 'dag/vim-fish'
 Plug 'tpope/vim-fugitive'
 Plug 'ivanov/vim-ipython'
