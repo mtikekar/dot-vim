@@ -9,6 +9,7 @@ Plug 'mtikekar/vim-bsv'
 Plug 'dag/vim-fish'
 Plug 'tpope/vim-fugitive'
 Plug 'ivanov/vim-ipython'
+Plug 'rickhowe/diffchar.vim'
 call plug#end()
 
 if !exists('g:loaded_matchit')
@@ -86,7 +87,7 @@ set undodir^=~/.vim/undo
 
 " change default filetypes from module-2 and cobol
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
-autocmd BufNewFile,BufReadPost *.lib set filetype=
+autocmd BufNewFile,BufReadPost *.lib set filetype=liberty
 
 " new commands
 command ChangeDirectory cd %:p:h
