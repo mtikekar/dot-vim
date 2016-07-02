@@ -3,3 +3,4 @@ set guifont=Inconsolata\ 11
 set linespace=3
 " no toolbar
 set guioptions-=T
+set guioptions-=m

@@ -8,7 +8,6 @@ Plug 'MarcWeber/vim-addon-mw-utils' | Plug 'tomtom/tlib_vim' | Plug 'garbas/vim-
 Plug 'git@github.com:mtikekar/vim-bsv.git'
 Plug 'dag/vim-fish'
 Plug 'tpope/vim-fugitive'
-Plug 'ivanov/vim-ipython'
 Plug 'rickhowe/diffchar.vim'
 call plug#end()
 
