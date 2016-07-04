@@ -3,12 +3,14 @@ call plug#begin()
 Plug 'altercation/vim-colors-solarized'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'mbbill/undotree', {'on': 'UndotreeShow'}
-Plug 'ervandew/supertab'
+Plug 'vim-scripts/L9' | Plug 'othree/vim-autocomplpop'
 Plug 'MarcWeber/vim-addon-mw-utils' | Plug 'tomtom/tlib_vim' | Plug 'garbas/vim-snipmate'
-Plug 'git@github.com:mtikekar/vim-bsv.git'
+Plug 'mtikekar/vim-bsv'
 Plug 'dag/vim-fish'
 Plug 'tpope/vim-fugitive'
 Plug 'rickhowe/diffchar.vim'
+Plug 'jiangmiao/auto-pairs'
+Plug 'tpope/vim-endwise'
 call plug#end()
 
 if !exists('g:loaded_matchit')
@@ -28,7 +30,7 @@ set foldmethod=indent
 set foldlevel=99
 set foldtext=
 set foldignore=
-nnoremap <space> za
+nnoremap <leader><space> za
 
 " soft wrap at word boundaries
 set linebreak
@@ -46,11 +48,17 @@ set hlsearch
 
 set shell=/bin/bash
 
+" Y like D
+map Y y$
+
+" Open file under cursor in new tab
+nnoremap gf <C-w>gf
+
 " move up/down by displayed lines rather than actual lines
 nnoremap <up> gk
 nnoremap <down> gj
-inoremap <up> <C-o>gk
-inoremap <down> <C-o>gj
+inoremap <expr> <up> pumvisible()? '<up>' : '<C-o>gk'
+inoremap <expr> <down> pumvisible()? '<down>' : '<C-o>gj'
 
 " file type detection and indenting
 filetype plugin indent on
@@ -84,6 +92,9 @@ set backupdir^=~/.vim/backups
 set undofile
 set undodir^=~/.vim/undo
 
+" autocomplpop settings
+let g:acp_behaviorKeywordLength = 5
+
 " change default filetypes from module-2 and cobol
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 autocmd BufNewFile,BufReadPost *.lib set filetype=liberty
@@ -110,16 +121,18 @@ map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans
 
 " gvim settings, put machine-specific settings in gvimrc
 if has('gui_running')
-    " padding on left
+	let &guifont = 'Inconsolata 11'
+	set encoding=utf-8
+	" linespacing = 1 + linespace/10
+	set linespace=3
+	" no toolbar
+	set guioptions-=T
+	set guioptions-=m    " padding on left
+
     autocmd BufEnter * sign define dummy
     autocmd BufEnter * execute 'sign place 9999 line=1 name=dummy buffer=' . bufnr('')
     highlight! link SignColumn Normal
-
-    set ballooneval
 endif
-
-" supertab setting
-let g:SuperTabDefaultCompletionType = "context"
 
 augroup templates
   au!
@@ -131,7 +144,7 @@ augroup templates
 augroup END
 
 " New BSV files use tabs, in existing files check for tabs
-function TabOrSpace()
+function! TabOrSpace()
     if search("^\t", "nw") == 0
         setlocal expandtab
         setlocal shiftwidth=4 tabstop=4 softtabstop=4
@@ -141,5 +154,22 @@ function TabOrSpace()
     endif
 endfunction
 
-autocmd BufReadPost *.bsv call TabOrSpace()
-autocmd BufNewFile *.bsv setlocal noexpandtab shiftwidth=2 tabstop=2 softtabstop=2
+function! BSVSetPath(srcdir)
+    let pathfile = a:srcdir . '/bsvpath'
+    if filereadable(pathfile)
+        set path=
+        for line in readfile(pathfile)
+            if line =~# '^[^$/]'
+                let line = simplify(a:srcdir . '/' . line)
+            endif
+            execute "set path+=" . line
+        endfor
+    endif
+endfunction
+
+augroup filetype_bsv
+    au!
+    autocmd BufReadPost *.bsv call TabOrSpace()
+    autocmd BufNewFile *.bsv setlocal noexpandtab shiftwidth=2 tabstop=2 softtabstop=2
+    autocmd FileType bsv call BSVSetPath(expand('<afile>:p:h'))
+augroup END
